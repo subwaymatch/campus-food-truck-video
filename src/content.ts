@@ -18,42 +18,76 @@ export type Slide =
   | { type: "closing"; heading: string; lines: string[]; seconds: number };
 
 export const video: { author: string; slides: Slide[] } = {
-  author: "Your Name",
+  author: "Park",
   slides: [
     {
       type: "title",
-      title: "Your Presentation Title",
-      subtitle: "A short video about a business topic you choose",
-      seconds: 4,
-    },
-    {
-      type: "bullets",
-      heading: "How this starter works",
-      bullets: [
-        "Your coding agent edits src/content.ts and the slides in src/slides",
-        "Every merge into main renders a new MP4 with GitHub Actions",
-        "The finished video appears on your GitHub Pages site",
-      ],
-      seconds: 7,
-    },
-    {
-      type: "bar-chart",
-      heading: "A sample chart",
-      data: [
-        { label: "Q1", value: 120 },
-        { label: "Q2", value: 180 },
-        { label: "Q3", value: 150 },
-        { label: "Q4", value: 240 },
-      ],
-      valueSuffix: "k",
-      note: "Sample numbers, not real data. Replace them with your own.",
+      title: "Is a Campus Food Truck Worth It?",
+      subtitle: "A six-month planning model by Park",
       seconds: 6,
     },
     {
+      type: "bullets",
+      heading: "Why the question matters",
+      bullets: [
+        "An $85,000 startup cost makes the decision consequential.",
+        "Each order must help cover food, packaging, and monthly bills.",
+        "The test: can daily demand support sustainable operations?",
+      ],
+      seconds: 9,
+    },
+    {
+      type: "bullets",
+      heading: "Planning assumptions",
+      bullets: [
+        "$85,000 startup cost; $11 average order",
+        "Food and packaging: 32% of sales",
+        "$9,800 monthly fixed costs: permit, insurance, parking, fuel, two part-time staff",
+        "Open 20 days per month",
+        "Orders/day, months 1–6: 60, 85, 100, 115, 120, 120",
+      ],
+      seconds: 15,
+    },
+    {
+      type: "stat",
+      heading: "Operating break-even",
+      value: "66",
+      caption: "orders per open day to cover monthly fixed costs. Rounded up; excludes startup-cost recovery.",
+      seconds: 8,
+    },
+    {
+      type: "bar-chart",
+      heading: "Monthly operating profit",
+      data: [
+        { label: "Month 1", value: -824 },
+        { label: "Month 2", value: 2916 },
+        { label: "Month 3", value: 5160 },
+        { label: "Month 4", value: 7404 },
+        { label: "Month 5", value: 8152 },
+        { label: "Month 6", value: 8152 },
+      ],
+      valuePrefix: "$",
+      note: "After food and packaging and fixed costs; excludes startup-cost recovery.",
+      seconds: 12,
+    },
+    {
+      type: "bullets",
+      heading: "Recommendation: validate demand first",
+      bullets: [
+        "Pilot before committing the $85,000 startup cost.",
+        "The plan misses operating break-even in month 1, then clears it in months 2–6.",
+        "Confirm demand near 66 orders per open day and plan startup-cost recovery.",
+      ],
+      seconds: 10,
+    },
+    {
       type: "closing",
-      heading: "Sources",
-      lines: ["List the source of every number in your video here."],
-      seconds: 4,
+      heading: "A planning model, not a forecast",
+      lines: [
+        "Every number is a planning assumption.",
+        "Source: Park's own planning estimates supplied for this video.",
+      ],
+      seconds: 7,
     },
   ],
 };
