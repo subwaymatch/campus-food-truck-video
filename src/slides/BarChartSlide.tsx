@@ -32,13 +32,16 @@ export const BarChartSlide: React.FC<{ slide: Extract<Slide, { type: "bar-chart"
           const grow = spring({ frame: frame - 10 - i * 8, fps, config: { damping: 200 } });
           const h = interpolate(grow, [0, 1], [0, (Math.abs(d.value) / max) * MAX_BAR_HEIGHT]);
           const shown = Math.round(d.value * grow);
+          // The minus sign goes before the prefix: "-$824", not "$-824".
+          const sign = shown < 0 ? "-" : "";
           const top = d.value >= 0 ? ZERO_LINE - h : ZERO_LINE;
           const valueTop = d.value >= 0 ? Math.max(0, top - 52) : top + h + 8;
           return (
             <div key={d.label} style={{ flex: 1, position: "relative", height: 500, textAlign: "center" }}>
               <div style={{ position: "absolute", top: valueTop, left: 0, right: 0, fontSize: 40, fontWeight: 600, opacity: grow }}>
+                {sign}
                 {slide.valuePrefix ?? ""}
-                {shown.toLocaleString("en-US")}
+                {Math.abs(shown).toLocaleString("en-US")}
                 {slide.valueSuffix ?? ""}
               </div>
               <div
@@ -47,7 +50,7 @@ export const BarChartSlide: React.FC<{ slide: Extract<Slide, { type: "bar-chart"
                   top,
                   width: "100%",
                   height: h,
-                  backgroundColor: d.value < 0 ? theme.accent : i === slide.data.length - 1 ? theme.accent : theme.accent2,
+                  backgroundColor: d.value < 0 ? theme.loss : i === slide.data.length - 1 ? theme.accent : theme.accent2,
                   borderRadius: d.value < 0 ? "0 0 12px 12px" : "12px 12px 0 0",
                 }}
               />
