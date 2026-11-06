@@ -1,5 +1,6 @@
 node_modules/
 out/
+build/
 .DS_Store
 # Made by the render workflow, not stored in the repository
 site/video.mp4
