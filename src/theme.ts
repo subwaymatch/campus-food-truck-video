@@ -22,4 +22,5 @@ export const theme = {
   muted: "#a9b4c6",
   accent: "#ff8a3d",
   accent2: "#4cc9a6",
+  loss: "#e5484d",
 };
