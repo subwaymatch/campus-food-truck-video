@@ -15,6 +15,15 @@ export type Slide =
       note?: string;
       seconds: number;
     }
+  | {
+      type: "line-chart";
+      heading: string;
+      data: { label: string; value: number }[];
+      target: number;
+      targetLabel: string;
+      highlightLabel: string;
+      seconds: number;
+    }
   | { type: "closing"; heading: string; lines: string[]; seconds: number };
 
 export const video: { author: string; slides: Slide[] } = {
@@ -45,8 +54,9 @@ export const video: { author: string; slides: Slide[] } = {
         "$9,800 monthly fixed costs: permit, insurance, parking, fuel, two part-time staff",
         "Open 20 days per month",
         "Orders/day, months 1–6: 60, 85, 100, 115, 120, 120",
+        "Months 7–14: assume 120 orders/day; $8,152 monthly operating profit",
       ],
-      seconds: 15,
+      seconds: 17,
     },
     {
       type: "stat",
@@ -68,6 +78,26 @@ export const video: { author: string; slides: Slide[] } = {
       ],
       valuePrefix: "$",
       note: "After food and packaging and fixed costs; excludes startup-cost recovery.",
+      seconds: 12,
+    },
+    {
+      type: "line-chart",
+      heading: "Cumulative operating profit",
+      data: [
+        { label: "Month 1", value: -824 },
+        { label: "Month 2", value: 2916 },
+        { label: "Month 3", value: 5160 },
+        { label: "Month 4", value: 7404 },
+        { label: "Month 5", value: 8152 },
+        { label: "Month 6", value: 8152 },
+        ...Array.from({ length: 8 }, (_, i) => ({ label: `Month ${i + 7}`, value: 8152 })),
+      ].reduce<{ label: string; value: number }[]>((totals, month) => {
+        totals.push({ label: month.label, value: (totals[totals.length - 1]?.value ?? 0) + month.value });
+        return totals;
+      }, []),
+      target: 85000,
+      targetLabel: "$85,000 startup cost",
+      highlightLabel: "Startup cost passed in month 13",
       seconds: 12,
     },
     {

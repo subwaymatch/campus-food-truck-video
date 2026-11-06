@@ -10,6 +10,7 @@ import { TitleSlide } from "./slides/TitleSlide";
 import { BulletsSlide } from "./slides/BulletsSlide";
 import { StatSlide } from "./slides/StatSlide";
 import { BarChartSlide } from "./slides/BarChartSlide";
+import { LineChartSlide } from "./slides/LineChartSlide";
 import { ClosingSlide } from "./slides/ClosingSlide";
 import { ProgressBar } from "./slides/ProgressBar";
 
@@ -23,6 +24,8 @@ const renderSlide = (slide: Slide) => {
       return <StatSlide slide={slide} />;
     case "bar-chart":
       return <BarChartSlide slide={slide} />;
+    case "line-chart":
+      return <LineChartSlide slide={slide} />;
     case "closing":
       return <ClosingSlide slide={slide} />;
   }
