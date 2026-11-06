@@ -1,0 +1,75 @@
+# Renders the video with Remotion and publishes it to GitHub Pages.
+# - On a pull request: renders the video to check that it builds. Nothing is published.
+#   The MP4 is attached to the run under "Artifacts" if you want to download it.
+# - On a push to main (for example, when you merge a pull request): renders and publishes.
+# Before it can publish, turn on GitHub Pages: Settings, then Pages, then set Source to "GitHub Actions".
+
+name: Render and publish video
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Adds a "Run workflow" button to the Actions tab, to render and publish without pushing a change
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One render per branch or pull request at a time. A newer push to a pull request cancels
+# the older render; a render of main that has started is allowed to finish.
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  render:
+    name: Render video
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install packages
+        run: npm ci
+      - name: Check the code for errors
+        run: npx tsc --noEmit
+      - name: Render the video
+        run: npx remotion render Presentation site/video.mp4
+      - name: Render the poster image
+        run: npx remotion still Presentation site/poster.jpg --frame=45 --image-format=jpeg
+      - name: Record which commit was rendered
+        run: echo "{\"commit\":\"${GITHUB_SHA::7}\",\"rendered\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > site/build-info.json
+      - name: Attach the MP4 to this run
+        uses: actions/upload-artifact@v6
+        with:
+          name: video
+          path: site/video.mp4
+          retention-days: 14
+      - name: Package the site
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  publish:
+    name: Publish to GitHub Pages
+    if: github.event_name != 'pull_request'
+    needs: render
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Set up GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

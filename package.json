@@ -1,0 +1,24 @@
+{
+  "name": "presentation-video-starter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Starter for a business presentation video made with Remotion and a coding agent.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Presentation out/video.mp4",
+    "still": "remotion still Presentation out/poster.png --frame=45",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.538",
+    "@remotion/fonts": "4.0.538",
+    "@remotion/transitions": "4.0.538",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.538"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

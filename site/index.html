@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Presentation video</title>
+  <style>
+    :root { --bg: #0f1b2d; --text: #f4f6fa; --muted: #a9b4c6; --accent: #ff8a3d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 48px; }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 0 0 8px; }
+    p { color: var(--muted); line-height: 1.5; }
+    video { display: block; width: 100%; height: auto; border-radius: 10px; background: #000; margin: 20px 0 16px; }
+    a { color: var(--accent); }
+    .meta { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Presentation video</h1>
+    <p>A short business presentation made with Remotion and a coding agent.</p>
+    <video id="video" controls playsinline preload="metadata" poster="poster.jpg" src="video.mp4"></video>
+    <p><a id="download" href="video.mp4" download>Download the MP4</a></p>
+    <p class="meta" id="meta"></p>
+  </main>
+  <script>
+    // Show which commit this video was rendered from, and load the newest copy of the video.
+    fetch("build-info.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((info) => {
+        if (!info) return;
+        const v = "?v=" + encodeURIComponent(info.commit);
+        document.getElementById("video").src = "video.mp4" + v;
+        document.getElementById("video").poster = "poster.jpg" + v;
+        document.getElementById("download").href = "video.mp4" + v;
+        const when = new Date(info.rendered).toLocaleString();
+        document.getElementById("meta").textContent = "Rendered from commit " + info.commit + " on " + when + ".";
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
