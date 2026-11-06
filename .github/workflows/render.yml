@@ -48,14 +48,14 @@ jobs:
       - name: Record which commit was rendered
         run: echo "{\"commit\":\"${GITHUB_SHA::7}\",\"rendered\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > site/build-info.json
       - name: Attach the MP4 to this run
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: video
           path: site/video.mp4
           retention-days: 14
       - name: Package the site
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -69,7 +69,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Set up GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Publish to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
